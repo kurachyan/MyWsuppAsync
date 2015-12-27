@@ -9,7 +9,7 @@ namespace UnitTest
     public class WsuppAsync_UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public async void TestMethod1()
         {
             String Result;
 
@@ -17,9 +17,9 @@ namespace UnitTest
 
             #region 対象：評価対象なし
             String KeyWord = @"This is a Pen.";
-            Wsupp.Clear();
+            await Wsupp.ClearAsync();
             Wsupp.Wbuf = KeyWord;
-            Wsupp.Exec();
+            await Wsupp.ExecAsync();
             Result = Wsupp.Wbuf;
 
             Assert.AreEqual(KeyWord, Result, @"Wsupp[This is a Pen.] = [This is a Pen.]");
@@ -34,9 +34,9 @@ namespace UnitTest
 
             #region 対象：評価対象あり（””）
             String KeyWord = "This is \"a\"  Pen.";
-            Wsupp.Clear();
-            Wsupp.Wbuf = KeyWord;
-            Wsupp.Exec();
+            Wsupp.ClearAsync();
+//            Wsupp.Wbuf = KeyWord;
+            Wsupp.ExecAsync(KeyWord);
 
             Assert.AreEqual("This is \" \"  Pen.", Wsupp.Wbuf, "Wsupp[This is \"a\" Pen.] = [This is \" \" Pen.]");
             #endregion
@@ -49,26 +49,26 @@ namespace UnitTest
 
 
             #region 対象：評価対象あり（’’）
-            String KeyWord = "This is \'a\' Pen.";
-            Wsupp.Clear();
-            Wsupp.Wbuf = KeyWord;
-            Wsupp.Exec();
+//            String KeyWord = "This is \'a\' Pen.";
+            Wsupp.ClearAsync();
+//            Wsupp.Wbuf = KeyWord;
+            Wsupp.ExecAsync(@"This is 'a' Pen.");
 
             Assert.AreEqual("This is \' \' Pen.", Wsupp.Wbuf, "Wsupp[This is \'a\' Pen.] = [This is \' \' Pen.]");
             #endregion
         }
 
         [TestMethod]
-        public void TestMethod4()
+        public async void TestMethod4()
         {
             CS_WsuppAsync Wsupp = new CS_WsuppAsync();
 
 
             #region 対象：評価対象あり（’”’確認）
             String KeyWord = "This is \'\"\' Pen.";
-            Wsupp.Clear();
+            await Wsupp.ClearAsync();
             Wsupp.Wbuf = KeyWord;
-            Wsupp.Exec();
+            await Wsupp.ExecAsync();
 
             Assert.AreEqual("This is \' \' Pen.", Wsupp.Wbuf, "Wsupp[This is \'\"\' Pen.] = [This is \' \' Pen.]");
             #endregion
